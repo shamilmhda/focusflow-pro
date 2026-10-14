@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusFlow Pro — My Tasks</title>
+<style>
+:root{--bg:#f6f7fb;--surface:#fff;--text:#202238;--muted:#777b91;--accent:#7357f5;--accent-dark:#5d43dc;--line:#e8e9f2;--red:#c43c55;--shadow:0 18px 50px rgba(39,35,84,.08)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 10% 0%,#ece8ff 0,transparent 32%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.app{width:min(1000px,calc(100% - 30px));margin:auto;padding:32px 0 48px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:32px}.brand{display:flex;align-items:center;gap:12px;font-weight:850;font-size:1.25rem;letter-spacing:-.04em}.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;color:white;background:linear-gradient(135deg,#8d79ff,#6549ed);box-shadow:0 8px 20px #7357f544}.today{color:var(--muted);font-size:.9rem}
+.eyebrow{color:var(--accent);font-weight:800;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2rem,5vw,3.1rem);letter-spacing:-.055em;margin:8px 0;line-height:1.05}.subtitle{color:var(--muted);margin:0;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0}.stat{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}.stat-label{color:var(--muted);font-size:.84rem}.stat-number{font-size:1.8rem;font-weight:800;letter-spacing:-.04em;margin-top:6px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}h2{margin:0;font-size:1.15rem}.count{color:var(--muted);font-size:.85rem}
+form{display:grid;grid-template-columns:minmax(150px,1fr) auto auto;gap:10px;margin-bottom:14px}.field{min-width:0;padding:12px 13px;border:1px solid #dedfed;border-radius:12px;background:#fbfbfe;color:var(--text);outline:none}.field:focus{border-color:var(--accent);box-shadow:0 0 0 3px #7357f51c}.add-btn{border:0;border-radius:12px;padding:0 18px;background:var(--accent);color:#fff;font-weight:750}.add-btn:hover{background:var(--accent-dark)}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}.filters,.tools{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.filter{border:1px solid transparent;background:#f3f2fa;color:#666981;padding:8px 13px;border-radius:999px;font-size:.84rem;font-weight:650}.filter.active{background:#eeeaff;color:var(--accent-dark);border-color:#dcd5ff}.tools{align-items:center;justify-content:space-between}.search{flex:1;min-width:170px}.sort{min-width:165px}
+.task-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.task{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:15px;background:white}.check{flex:0 0 auto;width:20px;height:20px;accent-color:var(--accent);cursor:pointer}.task-main{flex:1;min-width:0}.task-text{display:block;overflow-wrap:anywhere;line-height:1.4}.task.done .task-text{text-decoration:line-through;color:#9699aa}.task-meta{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin-top:7px;font-size:.75rem;color:var(--muted)}.pill{padding:4px 8px;border-radius:999px;font-weight:750;background:#f0eff8}.priority-high{color:#b4233e;background:#fff0f2}.priority-medium{color:#9a6200;background:#fff6df}.priority-low{color:#27734f;background:#eaf8f0}.overdue{color:#b4233e;font-weight:800}.due-soon{color:#9a6200;font-weight:800}.tag{color:#21865b;background:#eaf8f0;padding:4px 8px;border-radius:999px;font-size:.7rem;font-weight:800}.delete{border:0;background:transparent;color:#a0a2b1;font-size:1.2rem;padding:5px 8px;border-radius:8px}.delete:hover{color:var(--red);background:#fff0f2}
+.empty{text-align:center;padding:36px 12px;color:var(--muted)}.empty-icon{font-size:2rem;margin-bottom:8px}.progress-wrap{margin-top:24px}.progress-top{display:flex;justify-content:space-between;gap:10px;font-size:.84rem;color:var(--muted);margin-bottom:9px}.progress-track{height:9px;background:#efeff6;border-radius:999px;overflow:hidden}.progress-bar{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#8a76ff,#6045e8);transition:width .25s}
+footer{text-align:center;color:#9699aa;font-size:.8rem;margin-top:22px}
+@media(max-width:680px){.app{width:calc(100% - 22px);padding-top:22px}header{margin-bottom:25px}.today{display:none}.stats{gap:8px}.stat{padding:13px;border-radius:14px}.stat-number{font-size:1.5rem}form{grid-template-columns:1fr 1fr}.task-name{grid-column:1/-1}form .task-name{grid-column:1/-1}form .add-btn{min-height:44px}.options{grid-template-columns:1fr 1fr}.panel{border-radius:20px}.task{padding:11px;gap:9px}.sort{flex:1}}
+</style>
+</head>
+<body>
+<main class="app">
+<header><div class="brand"><div class="logo">✓</div><span>FocusFlow <span style="color:var(--accent)">Pro</span></span></div><div class="today" id="today"></div></header>
+<section><div class="eyebrow">Your personal workspace</div><h1>Make today count.</h1><p class="subtitle">Prioritize your work, set deadlines, and keep moving forward.</p></section>
+<section class="stats" aria-label="Task statistics">
+<div class="stat"><div class="stat-label">All tasks</div><div class="stat-number" id="allCount">0</div></div>
+<div class="stat"><div class="stat-label">Remaining</div><div class="stat-number" id="remainingCount">0</div></div>
+<div class="stat"><div class="stat-label">Completed</div><div class="stat-number" id="completedCount">0</div></div>
+</section>
+<section class="panel">
+<div class="panel-head"><h2>My task list</h2><span class="count" id="listCount">0 tasks</span></div>
+<form id="taskForm">
+<input class="field task-name" id="taskInput" type="text" maxlength="140" placeholder="What do you want to accomplish?" autocomplete="off" aria-label="New task" required>
+<select class="field" id="priorityInput" aria-label="Task priority"><option value="medium">Medium priority</option><option value="high">High priority</option><option value="low">Low priority</option></select>
+<input class="field" id="dueInput" type="date" aria-label="Due date">
+<button class="add-btn" type="submit">＋ Add task</button>
+</form>
+<div class="filters" aria-label="Filter tasks">
+<button class="filter active" type="button" data-filter="all">All tasks</button><button class="filter" type="button" data-filter="active">Remaining</button><button class="filter" type="button" data-filter="done">Completed</button><button class="filter" type="button" data-filter="overdue">Overdue</button>
+</div>
+<div class="tools"><input class="field search" id="searchInput" type="search" placeholder="Search tasks…" aria-label="Search tasks"><select class="field sort" id="sortInput" aria-label="Sort tasks"><option value="newest">Newest first</option><option value="priority">Priority: high to low</option><option value="due">Due date: soonest</option><option value="name">Name: A to Z</option></select></div>
+<ul class="task-list" id="taskList"></ul>
+<div class="progress-wrap"><div class="progress-top"><span>Completion progress</span><strong id="progressLabel">0% complete</strong></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div></div>
+</section>
+<footer>Your tasks are saved in this browser on this device.</footer>
+</main>
+<script>
+const STORAGE_KEY = "focusflow-tasks-v2";
+const starterTasks = [
+  {id:1,text:"Learn what HTML does",done:true,priority:"low",due:""},
+  {id:2,text:"Build my first web app",done:false,priority:"high",due:""},
+  {id:3,text:"Practise JavaScript for 20 minutes",done:false,priority:"medium",due:""}
+];
+let tasks = loadTasks();
+let currentFilter = "all";
+const taskForm = document.querySelector("#taskForm");
+const taskInput = document.querySelector("#taskInput");
+const priorityInput = document.querySelector("#priorityInput");
+const dueInput = document.querySelector("#dueInput");
+const taskList = document.querySelector("#taskList");
+const searchInput = document.querySelector("#searchInput");
+const sortInput = document.querySelector("#sortInput");
+
+function loadTasks() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === null) {
+      // Bring forward tasks saved by the original FocusFlow version.
+      const oldSaved = localStorage.getItem("focusflow-tasks-v1");
+      if (oldSaved !== null) {
+        const oldTasks = JSON.parse(oldSaved);
+        return oldTasks.map(t => ({...t, priority:t.priority || "medium", due:t.due || ""}));
+      }
+      return starterTasks;
+    }
+    const parsed = JSON.parse(saved);
+    return parsed.map(t => ({...t, priority:t.priority || "medium", due:t.due || ""}));
+  } catch {
+    return starterTasks;
+  }
+}
+function saveTasks() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  } catch (error) {
+    alert("The browser could not save your tasks. Check your browser storage settings.");
+  }
+}
+function isOverdue(task) {
+  return Boolean(task.due && !task.done && task.due < localDateString());
+}
+function localDateString() {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${year}-${month}-${day}`;
+}
+function formatDue(dateString) {
+  if (!dateString) return "No deadline";
+  const [y,m,d] = dateString.split("-").map(Number);
+  return new Intl.DateTimeFormat(undefined,{month:"short",day:"numeric",year:"numeric"}).format(new Date(y,m-1,d));
+}
+function getVisibleTasks() {
+  const query = searchInput.value.trim().toLowerCase();
+  let result = tasks.filter(task => {
+    const matchesFilter =
+      currentFilter === "all" ||
+      (currentFilter === "active" && !task.done) ||
+      (currentFilter === "done" && task.done) ||
+      (currentFilter === "overdue" && isOverdue(task));
+    return matchesFilter && task.text.toLowerCase().includes(query);
+  });
+  const rank = {high:0,medium:1,low:2};
+  result.sort((a,b) => {
+    if (sortInput.value === "priority") return rank[a.priority]-rank[b.priority];
+    if (sortInput.value === "due") return (a.due || "9999-12-31").localeCompare(b.due || "9999-12-31");
+    if (sortInput.value === "name") return a.text.localeCompare(b.text);
+    return b.id-a.id;
+  });
+  return result;
+}
+function renderTasks() {
+  const visibleTasks = getVisibleTasks();
+  taskList.replaceChildren();
+  if (!visibleTasks.length) {
+    const empty = document.createElement("li");
+    empty.className = "empty";
+    empty.innerHTML = '<div class="empty-icon">✦</div><strong>No matching tasks</strong><div style="margin-top:6px">Try another filter or add a task above.</div>';
+    taskList.appendChild(empty);
+  } else {
+    visibleTasks.forEach(task => {
+      const item = document.createElement("li");
+      item.className = `task${task.done ? " done" : ""}`;
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox"; checkbox.className = "check"; checkbox.checked = task.done;
+      checkbox.setAttribute("aria-label", `Mark ${task.text} as ${task.done ? "remaining" : "completed"}`);
+      checkbox.addEventListener("change", () => {
+        tasks = tasks.map(t => t.id === task.id ? {...t,done:checkbox.checked} : t);
+        saveTasks(); renderTasks();
+      });
+      const main = document.createElement("div"); main.className = "task-main";
+      const text = document.createElement("span"); text.className = "task-text"; text.textContent = task.text;
+      const meta = document.createElement("div"); meta.className = "task-meta";
+      const priority = document.createElement("span");
+      priority.className = `pill priority-${task.priority}`;
+      priority.textContent = `${task.priority[0].toUpperCase()}${task.priority.slice(1)} priority`;
+      meta.appendChild(priority);
+      const due = document.createElement("span");
+      due.textContent = task.due ? `Due ${formatDue(task.due)}` : "No deadline";
+      if (isOverdue(task)) due.className = "overdue";
+      else if (!task.done && task.due === localDateString()) due.className = "due-soon";
+      meta.appendChild(due);
+      main.append(text,meta); item.append(checkbox,main);
+      if (task.done) {
+        const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = "DONE"; item.appendChild(tag);
+      }
+      const remove = document.createElement("button"); remove.className = "delete"; remove.type = "button"; remove.textContent = "×";
+      remove.setAttribute("aria-label",`Delete ${task.text}`);
+      remove.addEventListener("click", () => { tasks = tasks.filter(t => t.id !== task.id); saveTasks(); renderTasks(); });
+      item.appendChild(remove); taskList.appendChild(item);
+    });
+  }
+  const completed = tasks.filter(t=>t.done).length;
+  const remaining = tasks.length-completed;
+  const percent = tasks.length ? Math.round(completed/tasks.length*100) : 0;
+  document.querySelector("#allCount").textContent = tasks.length;
+  document.querySelector("#remainingCount").textContent = remaining;
+  document.querySelector("#completedCount").textContent = completed;
+  document.querySelector("#listCount").textContent = `${visibleTasks.length} ${visibleTasks.length===1?"task":"tasks"}`;
+  document.querySelector("#progressLabel").textContent = `${percent}% complete`;
+  document.querySelector("#progressBar").style.width = `${percent}%`;
+  document.querySelectorAll(".filter").forEach(button => {
+    const active = button.dataset.filter===currentFilter;
+    button.classList.toggle("active",active);
+    button.setAttribute("aria-pressed",String(active));
+  });
+}
+taskForm.addEventListener("submit",event=>{
+  event.preventDefault();
+  const text=taskInput.value.trim();
+  if(!text){taskInput.focus();return;}
+  tasks.unshift({id:Date.now(),text,done:false,priority:priorityInput.value,due:dueInput.value});
+  saveTasks(); currentFilter="all"; taskInput.value=""; dueInput.value=""; priorityInput.value="medium"; renderTasks(); taskInput.focus();
+});
+document.querySelectorAll(".filter").forEach(button=>button.addEventListener("click",()=>{currentFilter=button.dataset.filter;renderTasks();}));
+searchInput.addEventListener("input",renderTasks);
+sortInput.addEventListener("change",renderTasks);
+document.querySelector("#today").textContent=new Intl.DateTimeFormat(undefined,{weekday:"short",month:"short",day:"numeric"}).format(new Date());
+renderTasks();
+</script>
+</body>
+</html>
